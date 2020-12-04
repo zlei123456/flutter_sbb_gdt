@@ -14,7 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.qq.e.ads.cfg.MultiProcessFlag;
+import com.qq.e.comm.managers.GDTADManager;
 import com.sbb.flutter.flutter_sbb_gdt.gdt.Interstitial;
+import com.sbb.flutter.flutter_sbb_gdt.gdt.RewardAD;
 import com.sbb.flutter.flutter_sbb_gdt.gdt.Splash;
 import com.sbb.flutter.flutter_sbb_gdt.gdt.ractory.GDTBannerFactory;
 import com.sbb.flutter.flutter_sbb_gdt.gdt.ractory.GDTNativeExpress;
@@ -109,6 +111,11 @@ public class FlutterSbbGdtPlugin implements FlutterPlugin, MethodCallHandler, Ac
       result.success(rets);
     }else if(call.method.equals("splash")){
       Splash.getInstance(flutterPluginBinding.getApplicationContext(),flutterPluginBinding.getBinaryMessenger()).show((Map<String, Object>)call.arguments, result);
+    }else if(call.method.equals("reward_video")){
+//      this.posId = (String) params.get("posId");
+      String appId = call.argument("appId");
+      String posId = call.argument("posId");
+      new RewardAD(flutterPluginBinding.getApplicationContext(), appId, posId, result);
     } else {
       result.notImplemented();
     }
@@ -123,6 +130,7 @@ public class FlutterSbbGdtPlugin implements FlutterPlugin, MethodCallHandler, Ac
     if (call.hasArgument("appid")) {
       MultiProcessFlag.setMultiProcess(true);
       FlutterSbbGdtPlugin.appid = (String)call.argument("appid");
+      GDTADManager.getInstance().initWith(flutterPluginBinding.getApplicationContext(), FlutterSbbGdtPlugin.appid);
       result.success("");
       return ;
     }

@@ -12,6 +12,7 @@
     NSObject<FlutterPluginRegistrar>*_registrar;
     FlutterMethodChannel *_methodChannel;
     GDTRewardVideoAd *_rewardVideoAd;
+    FlutterResult rewardResult;
 }
 
 
@@ -36,7 +37,8 @@
     NSString *uuid = [GDTConfig createUUID];
     NSString *channelName = [NSString stringWithFormat:@"flutter_sbb_gdt/gdt_plugins/reward_video/%@", uuid];
     _methodChannel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:_messenger];
-    result(@{@"channel_name":channelName});
+    rewardResult = result;
+//    result(@{@"channel_name":channelName});
 }
 
 - (void)gdt_rewardVideoAdDidLoad:(GDTRewardVideoAd *)rewardedVideoAd{
@@ -59,6 +61,7 @@
 
 - (void)gdt_rewardVideoAdDidClose:(GDTRewardVideoAd *)rewardedVideoAd{
      NSLog(@"gdt_rewardVideoAdDidClose");
+    rewardResult(@{@"rewardAd": @"close"});
 }
 
 - (void)gdt_rewardVideoAdDidClicked:(GDTRewardVideoAd *)rewardedVideoAd{
@@ -67,6 +70,7 @@
 
 - (void)gdt_rewardVideoAd:(GDTRewardVideoAd *)rewardedVideoAd didFailWithError:(NSError *)error{
     NSLog(@"gdt_rewardVideoAd");
+//    rewardResult(@{@"rewardAd": @"fail"});
 }
 
 - (void)gdt_rewardVideoAdDidRewardEffective:(GDTRewardVideoAd *)rewardedVideoAd{
